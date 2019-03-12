@@ -18,7 +18,7 @@
     ],
     "require": {
         "php" : "~7.1",
-        "dfwood/wp-post-duplication ": "^1.0"
+        "wpackagist-plugin/post-duplicator": "^2.20"
     },
     "extra": {
         "branch-alias": {
