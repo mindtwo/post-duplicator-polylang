@@ -3,11 +3,11 @@
 /**
  * Post Duplicator Polylang.
  *
- * @see              https://www.mindtwo.de/
+ * @see               https://www.mindtwo.de/
  * @since             1.0.0
  *
  * @wordpress-plugin
- * Plugin Name:       post-duplicator-polylang
+ * Plugin Name:       Post Duplicator Polylang
  * Plugin URI:        https://github.com/mindtwo/post-duplicator-polylang
  * Description:       Removes Polylang 'post_translation' relationships from original post after duplication.
  * Version:           1.0.0
