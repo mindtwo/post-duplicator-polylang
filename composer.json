@@ -17,9 +17,15 @@
         }
     ],
     "require": {
-        "php" : "~7.1",
+        "php": "~7.1",
         "wpackagist-plugin/post-duplicator": "^2.20"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        }
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
