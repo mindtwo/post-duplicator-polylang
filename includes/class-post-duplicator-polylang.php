@@ -168,5 +168,49 @@ class Post_Duplicator_Polylang
                 'term_taxonomy_id' => $term_taxonomy_id
             ]);
         }
+
+        $post_ID = $duplicate_id;
+
+        // store original content/fields + post title
+        $origin = collect(get_fields($post_ID))->prepend(get_the_title($post_ID), 'post_title');
+
+        collect(pll_languages_list())->filter(function ($locale) {
+            // get all languages where locale is not de
+            if ($locale != 'de') {
+                // neuen post erstellen für alle anderen sprachen
+                global $user_ID;
+                $new_post = array(
+                'post_title' => 'New Post ' . $locale,
+                'post_content' => 'Lorem ipsum dolor sit amet...',
+                'post_status' => 'publish',
+                'post_date' => date('Y-m-d H:i:s'),
+                'post_author' => $user_ID,
+                'post_type' => 'post',
+                'post_category' => array(0)
+                );
+                $post_id = wp_insert_post($new_post);                
+            }
+            return $locale != 'de';
+        })->mapWithKeys(function ($locale) use ($post_ID) {
+            // combine locale with matching post
+            return [$locale => pll_get_post($post_ID, $locale)];
+        })->filter()->each(function ($postId) use ($origin) {
+            // loop to each field defined in the following collection to update it's content with the origin content
+            $origin->keys()->each(function ($fieldname) use ($postId, $origin) {
+                if ($fieldname == 'post_title') {
+                    // Update post title
+                    wp_update_post(
+                        [
+                            'ID'         => $postId,
+                            'post_title' => $origin->get($fieldname, ''),
+                        ]
+                    );
+                } else {
+                    // Update all acf fields
+                    update_field($fieldname, $origin->get($fieldname, ''), $postId);
+                }
+            });
+        });
+        
     }
 }
